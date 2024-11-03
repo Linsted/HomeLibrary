@@ -9,6 +9,7 @@ export class UsersService {
 
   create(user: ICreateUser) {
     this.users.push({ ...user, id: uuidv4() });
+    return { message: `User ${user.login} created` };
   }
 
   findAll(): ICreateUser[] {
