@@ -1,7 +1,9 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import { ICreateUser, IUpdatePassword } from './interfaces/user.interface';
+import { User } from './user.entity';
 
 /**
  *Class to connect to Users table and perform business logic
@@ -11,10 +13,24 @@ export class UsersService {
   /** Users array */
   private users: ICreateUser[] = [];
 
+  constructor(
+    /**Injecting Users repository */
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+  ) {}
+
   /** Create user */
-  create(user: ICreateUser) {
-    this.users.push({ ...user, id: uuidv4() });
-    return { message: `User ${user.login} created` };
+  async create(user: ICreateUser) {
+    const existingUser = await this.usersRepository.findOne({
+      where: {
+        login: user.login,
+      },
+    });
+
+    let newUser = this.usersRepository.create(user);
+    newUser = await this.usersRepository.save(newUser);
+
+    return newUser;
   }
 
   /** Find all Users */
