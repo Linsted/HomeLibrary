@@ -20,6 +20,7 @@ import { ICreateUser } from './interfaces/user.interface';
 export class UsersController {
   constructor(private userService: UsersService) {}
 
+  /**Get all users*/
   @Get()
   @ApiResponse({
     status: 200,
@@ -41,10 +42,11 @@ export class UsersController {
   @ApiOperation({
     summary: 'Fetch a list of users',
   })
-  findAll(): ICreateUser[] {
+  findAll() {
     return this.userService.findAll();
   }
 
+  /** Get one user by id */
   @Get(':id')
   @ApiOperation({
     summary: 'Fetch a user by id',
@@ -62,6 +64,7 @@ export class UsersController {
     return this.userService.findOne(id);
   }
 
+  /** Create user */
   @Post()
   @ApiOperation({
     summary: 'Create user',
@@ -83,6 +86,7 @@ export class UsersController {
     return this.userService.create(createUserDto);
   }
 
+  /** Update user password */
   @Put(':id')
   @ApiResponse({
     status: 200,
@@ -103,6 +107,7 @@ export class UsersController {
     return this.userService.updatePassword(id, updatePasswordDto);
   }
 
+  /** Delete user */
   @Delete(':id')
   @ApiResponse({
     status: 204,
