@@ -1,7 +1,6 @@
 import {
   Injectable,
-  HttpException,
-  HttpStatus,
+  Logger,
   BadRequestException,
   InternalServerErrorException,
   NotFoundException,
@@ -19,12 +18,14 @@ import { User } from './user.entity';
 @Injectable()
 export class UsersService {
   /** Users array */
-  private users: ICreateUser[] = [];
+
+  SERVICE: string = UsersService.name;
 
   constructor(
     /**Injecting Users repository */
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private readonly logger: Logger,
   ) {}
 
   /** Create user */
@@ -39,11 +40,12 @@ export class UsersService {
         withDeleted: true,
       });
     } catch (error) {
+      this.logger.error(
+        'Failed to retrieve users from the database',
+        this.SERVICE,
+      );
       throw new InternalServerErrorException(
         'Failed to retrieve users from the database',
-        {
-          description: 'Error connecting to the database',
-        },
       );
     }
 
@@ -56,9 +58,8 @@ export class UsersService {
     try {
       newUser = await this.usersRepository.save(newUser);
     } catch (error) {
-      throw new InternalServerErrorException('Failed to create new user', {
-        description: 'Error connecting to the database',
-      });
+      this.logger.error('Failed to create new user', error.stack, this.SERVICE);
+      throw new InternalServerErrorException('Failed to create new user');
     }
 
     const { password, ...newUserWithoutPassword } = newUser;
@@ -75,11 +76,12 @@ export class UsersService {
         select: ['id', 'login'],
       });
     } catch (error) {
+      this.logger.error(
+        'Failed to retrieve users from the database',
+        this.SERVICE,
+      );
       throw new InternalServerErrorException(
         'Failed to retrieve users from the database',
-        {
-          description: 'Error connecting to the database',
-        },
       );
     }
 
@@ -96,11 +98,12 @@ export class UsersService {
         select: ['id', 'login'],
       });
     } catch (error) {
+      this.logger.error(
+        'Failed to retrieve user from the database',
+        this.SERVICE,
+      );
       throw new InternalServerErrorException(
         'Failed to retrieve user from the database',
-        {
-          description: 'Error connecting to the database',
-        },
       );
     }
 
@@ -120,11 +123,12 @@ export class UsersService {
         select: ['id', 'password'],
       });
     } catch (error) {
+      this.logger.error(
+        'Failed to retrieve user from the database',
+        this.SERVICE,
+      );
       throw new InternalServerErrorException(
         'Failed to retrieve user from the database',
-        {
-          description: 'Error connecting to the database',
-        },
       );
     }
 
@@ -142,11 +146,12 @@ export class UsersService {
         password: updatePasswordDto.newPassword,
       });
     } catch (error) {
+      this.logger.error(
+        'Failed to update password in the database',
+        this.SERVICE,
+      );
       throw new InternalServerErrorException(
         'Failed to update password in the database',
-        {
-          description: 'Error updating the password in the database',
-        },
       );
     }
 
@@ -160,11 +165,9 @@ export class UsersService {
     try {
       await this.usersRepository.softDelete(user?.id);
     } catch (error) {
+      this.logger.error('Failed to delete user in the database', this.SERVICE);
       throw new InternalServerErrorException(
         'Failed to delete user in the database',
-        {
-          description: 'Error deleting user',
-        },
       );
     }
 
