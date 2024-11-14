@@ -36,6 +36,7 @@ export class UsersService {
         where: {
           login: user.login,
         },
+        withDeleted: true,
       });
     } catch (error) {
       throw new InternalServerErrorException(
@@ -60,7 +61,9 @@ export class UsersService {
       });
     }
 
-    return newUser;
+    const { password, ...newUserWithoutPassword } = newUser;
+
+    return newUserWithoutPassword;
   }
 
   /** Find all Users */
@@ -151,14 +154,20 @@ export class UsersService {
   }
 
   /** Delete user */
-  deleteUser(id: string) {
-    const user = this.findOne(id);
-    if (!user) {
-      throw new HttpException('User doesn`t exist', HttpStatus.NOT_FOUND);
+  async deleteUser(id: string) {
+    const user = await this.findOne(id);
+
+    try {
+      await this.usersRepository.softDelete(user?.id);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to delete user in the database',
+        {
+          description: 'Error deleting user',
+        },
+      );
     }
 
-    this.users = this.users.filter((user) => user.id !== id);
-
-    return `User ${id} deleted`;
+    return { message: `User ${user?.login} deleted` };
   }
 }
