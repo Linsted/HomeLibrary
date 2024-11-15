@@ -6,6 +6,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { User } from './users/user.entity';
+import { ArtistModule } from './artist/artists.module';
+import { Artist } from './artist/entities/artist.entity';
 
 @Module({
   imports: [
@@ -18,10 +20,11 @@ import { User } from './users/user.entity';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      entities: [User],
+      entities: [User, Artist],
       synchronize: true,
       // synchronize: true - shouldn`t be use in prod.
     }),
+    ArtistModule,
   ],
   controllers: [AppController],
   providers: [AppService, Logger],
