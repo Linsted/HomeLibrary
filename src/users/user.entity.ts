@@ -39,6 +39,7 @@ export class User {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
   updatedAt: Date;
+
   @DeleteDateColumn()
   deletedAt: Date;
 }

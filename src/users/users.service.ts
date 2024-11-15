@@ -9,16 +9,16 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { ICreateUser, IUpdatePassword } from './interfaces/user.interface';
 import { User } from './user.entity';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 /**
  *Class to connect to Users table and perform business logic
  */
 @Injectable()
 export class UsersService {
-  /** Users array */
-
+  /** Service name */
   SERVICE: string = UsersService.name;
 
   constructor(
@@ -29,13 +29,13 @@ export class UsersService {
   ) {}
 
   /** Create user */
-  async create(user: ICreateUser) {
+  async create(createUserDto: CreateUserDto) {
     let existingUser = null;
 
     try {
       existingUser = await this.usersRepository.findOne({
         where: {
-          login: user.login,
+          login: createUserDto.login,
         },
         withDeleted: true,
       });
@@ -53,7 +53,7 @@ export class UsersService {
       throw new BadRequestException('User with this login already exists');
     }
 
-    let newUser = this.usersRepository.create(user);
+    let newUser = this.usersRepository.create(createUserDto);
 
     try {
       newUser = await this.usersRepository.save(newUser);
@@ -68,8 +68,8 @@ export class UsersService {
   }
 
   /** Find all Users */
-  async findAll(): Promise<ICreateUser[]> {
-    let users = null;
+  async findAll() {
+    let users: Pick<CreateUserDto, 'id' | 'login'>[];
 
     try {
       users = await this.usersRepository.find({
@@ -115,7 +115,7 @@ export class UsersService {
   }
 
   /** Update password */
-  async updatePassword(id: string, updatePasswordDto: IUpdatePassword) {
+  async updatePassword(id: string, updatePasswordDto: UpdatePasswordDto) {
     let user = null;
     try {
       user = await this.usersRepository.findOne({
