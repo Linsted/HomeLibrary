@@ -1,14 +1,14 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
   DeleteDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
-export class User {
+export class Artist {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -16,16 +16,13 @@ export class User {
     type: 'varchar',
     length: 20,
     nullable: false,
-    unique: true,
   })
-  login: string;
+  name: string;
 
   @Column({
-    type: 'varchar',
-    length: 20,
-    nullable: false,
+    type: 'boolean',
   })
-  password: string;
+  grammy: boolean;
 
   @CreateDateColumn({
     type: 'timestamp',
@@ -39,6 +36,7 @@ export class User {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
   updatedAt: Date;
+
   @DeleteDateColumn()
   deletedAt: Date;
 }

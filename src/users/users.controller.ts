@@ -3,10 +3,10 @@ import {
   Get,
   Param,
   Post,
-  Put,
   Body,
   Delete,
   ParseUUIDPipe,
+  Patch,
 } from '@nestjs/common';
 import { ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -16,9 +16,8 @@ import {
 } from 'src/common/constants/swagger';
 
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dtos/create-user.dto';
-import { UpdatePasswordDto } from './dtos/update-password.dto';
-import { ICreateUser } from './interfaces/user.interface';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Controller('user')
 @ApiTags('Users')
@@ -48,7 +47,7 @@ export class UsersController {
   }
 
   /** Update user password */
-  @Put(':id')
+  @Patch(':id')
   @ApiResponse(USER_RESPONSE_SAMPLE.UPDATE_USER_PASSWORD)
   @ApiParam(USER_PARAMS_SAMPLE.UPDATE_USER_PASSWORD)
   updatePassword(
