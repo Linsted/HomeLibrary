@@ -3,10 +3,10 @@ import {
   Get,
   Param,
   Post,
-  Put,
   Body,
   Delete,
   ParseUUIDPipe,
+  Patch,
 } from '@nestjs/common';
 import { ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -47,7 +47,7 @@ export class UsersController {
   }
 
   /** Update user password */
-  @Put(':id')
+  @Patch(':id')
   @ApiResponse(USER_RESPONSE_SAMPLE.UPDATE_USER_PASSWORD)
   @ApiParam(USER_PARAMS_SAMPLE.UPDATE_USER_PASSWORD)
   updatePassword(

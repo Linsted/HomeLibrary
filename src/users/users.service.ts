@@ -1,17 +1,17 @@
 import {
-  Injectable,
-  Logger,
   BadRequestException,
+  Injectable,
   InternalServerErrorException,
+  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { User } from './entities/user.entity';
 
 /**
  *Class to connect to Users table and perform business logic
@@ -22,7 +22,7 @@ export class UsersService {
   SERVICE: string = UsersService.name;
 
   constructor(
-    /**Injecting Users repository */
+    /**Injecting Users repository and logger */
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private readonly logger: Logger,
@@ -90,7 +90,7 @@ export class UsersService {
 
   /** Find 1 User by ID */
   async findOne(id: string) {
-    let user = null;
+    let user: Pick<CreateUserDto, 'id' | 'login'>;
 
     try {
       user = await this.usersRepository.findOne({
