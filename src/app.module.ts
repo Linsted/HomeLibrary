@@ -8,6 +8,7 @@ import { ArtistModule } from './artists/artists.module';
 import { Artist } from './artists/entities/artist.entity';
 import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
+import { AlbumsModule } from './albums/albums.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { UsersModule } from './users/users.module';
       // synchronize: true - shouldn`t be use in prod.
     }),
     ArtistModule,
+    AlbumsModule,
   ],
   controllers: [AppController],
   providers: [AppService, Logger],
