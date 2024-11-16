@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
 } from '@nestjs/common';
@@ -37,21 +38,24 @@ export class ArtistController {
   /** Get one artist by id */
   @Get(':id')
   @ApiResponse(ARTIST_RESPONSE_SAMPLE.GET_ONE)
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.artistService.findOne(id);
   }
 
   /** Update artist */
   @Patch(':id')
   @ApiResponse(ARTIST_RESPONSE_SAMPLE.UPDATE_ARTIST)
-  update(@Param('id') id: string, @Body() updateArtistDto: UpdateArtistDto) {
+  update(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() updateArtistDto: UpdateArtistDto,
+  ) {
     return this.artistService.update(id, updateArtistDto);
   }
 
   /** Delete artist */
   @Delete(':id')
   @ApiResponse(ARTIST_RESPONSE_SAMPLE.DELETE_ARTIST)
-  remove(@Param('id') id: string) {
+  remove(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.artistService.remove(id);
   }
 }
