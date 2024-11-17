@@ -1,16 +1,17 @@
-import { Album } from 'src/albums/entities/album.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
+import { Artist } from 'src/artists/entities/artist.entity';
+
 @Entity()
-export class Artist {
+export class Album {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -22,9 +23,9 @@ export class Artist {
   name: string;
 
   @Column({
-    type: 'boolean',
+    type: 'int',
   })
-  grammy: boolean;
+  year: number;
 
   @CreateDateColumn({
     type: 'timestamp',
@@ -42,6 +43,9 @@ export class Artist {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @OneToMany(() => Album, (album) => album.artist)
-  albums: Album[];
+  @ManyToOne(() => Artist, (artist) => artist.albums, {
+    onDelete: 'SET NULL',
+    nullable: true,
+  })
+  artist: Artist;
 }

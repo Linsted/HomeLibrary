@@ -1,32 +1,35 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 import { v4 as uuidv4 } from 'uuid';
 import {
-  IsBoolean,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
   MinLength,
 } from 'class-validator';
 
-export class CreateArtistDto {
-  @IsOptional()
-  @IsUUID('4', { message: 'id must be a valid UUID' })
+export class CreateAlbumDto {
+  @Transform(() => uuidv4())
   id: string;
 
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
   @ApiProperty({
-    description: 'Name',
+    description: 'Album name',
   })
   name: string;
 
-  @IsBoolean()
+  @IsNumber()
   @IsNotEmpty()
   @ApiProperty({
-    description: 'Has grammy?',
+    description: 'Album year',
   })
-  grammy: boolean;
+  year: number;
+
+  @IsOptional()
+  @IsUUID('4', { message: 'artistId must be a valid UUID' })
+  artistId: string | null;
 }
