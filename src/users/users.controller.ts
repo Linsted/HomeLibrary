@@ -8,10 +8,10 @@ import {
   ParseUUIDPipe,
   Patch,
 } from '@nestjs/common';
-import { ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import {
-  USER_PARAMS_SAMPLE,
+  CONTROLLER_TAGS,
   USER_RESPONSE_SAMPLE,
 } from 'src/common/constants/swagger';
 
@@ -19,8 +19,8 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 
-@Controller('user')
-@ApiTags('Users')
+@Controller('/user')
+@ApiTags(CONTROLLER_TAGS.USERS)
 export class UsersController {
   constructor(private userService: UsersService) {}
 
@@ -34,7 +34,6 @@ export class UsersController {
   /** Get one user by id */
   @Get(':id')
   @ApiResponse(USER_RESPONSE_SAMPLE.GET_ONE_USER)
-  @ApiParam(USER_PARAMS_SAMPLE.GET_ONE_USER)
   findOne(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.userService.findOne(id);
   }
@@ -49,7 +48,6 @@ export class UsersController {
   /** Update user password */
   @Patch(':id')
   @ApiResponse(USER_RESPONSE_SAMPLE.UPDATE_USER_PASSWORD)
-  @ApiParam(USER_PARAMS_SAMPLE.UPDATE_USER_PASSWORD)
   updatePassword(
     @Body() updatePasswordDto: UpdatePasswordDto,
     @Param('id', new ParseUUIDPipe()) id: string,
@@ -60,7 +58,6 @@ export class UsersController {
   /** Delete user */
   @Delete(':id')
   @ApiResponse(USER_RESPONSE_SAMPLE.DELETE_USER)
-  @ApiParam(USER_PARAMS_SAMPLE.DELETE_USER)
   deleteUser(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.userService.deleteUser(id);
   }

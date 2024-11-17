@@ -3,11 +3,14 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { AlbumsService } from './albums.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
-import { ALBUM_RESPONSE_SAMPLE } from 'src/common/constants/swagger';
+import {
+  ALBUM_RESPONSE_SAMPLE,
+  CONTROLLER_TAGS,
+} from 'src/common/constants/swagger';
 
 /**Album controller*/
-@Controller('album')
-@ApiTags('Album')
+@Controller('/album')
+@ApiTags(CONTROLLER_TAGS.ALBUM)
 export class AlbumsController {
   constructor(private readonly albumsService: AlbumsService) {}
 

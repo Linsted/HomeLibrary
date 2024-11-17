@@ -74,24 +74,6 @@ export const USER_RESPONSE_SAMPLE = Object.freeze({
   },
 });
 
-export const USER_PARAMS_SAMPLE = Object.freeze({
-  GET_ONE_USER: {
-    name: 'id',
-    description: 'Get user with specific id',
-    example: '486bd5b8-be2a-4d72-890b-5bf97a9b1bf3',
-  },
-  UPDATE_USER_PASSWORD: {
-    name: 'id',
-    description: 'Update users password',
-    example: '486bd5b8-be2a-4d72-890b-5bf97a9b1bf3',
-  },
-  DELETE_USER: {
-    name: 'id',
-    description: 'Delete user',
-    example: '486bd5b8-be2a-4d72-890b-5bf97a9b1bf3',
-  },
-});
-
 export const ARTIST_RESPONSE_SAMPLE = Object.freeze({
   GET_ALL: {
     status: 200,
@@ -301,3 +283,9 @@ export const ALBUM_RESPONSE_SAMPLE = Object.freeze({
     },
   },
 });
+
+export enum CONTROLLER_TAGS {
+  ALBUM = 'Albums',
+  ARTIST = 'Artists',
+  USERS = 'Users',
+}

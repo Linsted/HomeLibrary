@@ -13,11 +13,14 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ArtistService } from './artists.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-import { ARTIST_RESPONSE_SAMPLE } from 'src/common/constants/swagger';
+import {
+  ARTIST_RESPONSE_SAMPLE,
+  CONTROLLER_TAGS,
+} from 'src/common/constants/swagger';
 
 /**Artist controller*/
-@Controller('artist')
-@ApiTags('Artist')
+@Controller('/artist')
+@ApiTags(CONTROLLER_TAGS.ARTIST)
 export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}
 
