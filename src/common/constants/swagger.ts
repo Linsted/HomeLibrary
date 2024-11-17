@@ -172,3 +172,132 @@ export const ARTIST_RESPONSE_SAMPLE = Object.freeze({
     },
   },
 });
+
+export const ALBUM_RESPONSE_SAMPLE = Object.freeze({
+  GET_ALL: {
+    status: 200,
+    description: 'List of albums fetched successfully',
+    schema: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+            example: '790be637-060f-429d-af84-5fe6b3cd68c4',
+          },
+          name: { type: 'string', example: 'Stan' },
+          year: { type: 'number', example: 2005 },
+          artist: {
+            type: 'object',
+            properties: {
+              id: {
+                type: 'string',
+                example: '5c0e7ec7-6490-4216-8ba2-1c311113074d',
+              },
+              name: { type: 'string', example: 'Eminem' },
+              grammy: { type: 'boolean', example: true },
+              createdAt: {
+                type: 'string',
+                format: 'date-time',
+                example: '2024-11-15T21:23:53.703Z',
+              },
+              updatedAt: {
+                type: 'string',
+                format: 'date-time',
+                example: '2024-11-15T21:23:53.703Z',
+              },
+              deletedAt: {
+                type: ['string', 'null'],
+                format: 'date-time',
+                example: null,
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  GET_ONE: {
+    status: 200,
+    description: 'One album by id',
+    schema: {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string',
+          example: '790be637-060f-429d-af84-5fe6b3cd68c4',
+        },
+        name: { type: 'string', example: 'Stan' },
+        year: { type: 'number', example: 2005 },
+        artist: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              example: '5c0e7ec7-6490-4216-8ba2-1c311113074d',
+            },
+            name: { type: 'string', example: 'Eminem' },
+            grammy: { type: 'boolean', example: true },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2024-11-15T21:23:53.703Z',
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2024-11-15T21:23:53.703Z',
+            },
+            deletedAt: {
+              type: ['string', 'null'],
+              format: 'date-time',
+              example: null,
+            },
+          },
+        },
+      },
+    },
+  },
+  CREATE_ALBUM: {
+    status: 201,
+    description: 'Album created',
+    schema: {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string',
+          example: '790be637-060f-429d-af84-5fe6b3cd68c4',
+        },
+        name: { type: 'string', example: 'Stan' },
+        year: { type: 'number', example: 2005 },
+        artist: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              example: '5c0e7ec7-6490-4216-8ba2-1c311113074d',
+            },
+            name: { type: 'string', example: 'Eminem' },
+            grammy: { type: 'boolean', example: true },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2024-11-15T21:23:53.703Z',
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2024-11-15T21:23:53.703Z',
+            },
+            deletedAt: {
+              type: ['string', 'null'],
+              format: 'date-time',
+              example: null,
+            },
+          },
+        },
+      },
+    },
+  },
+});
