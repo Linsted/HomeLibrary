@@ -288,4 +288,5 @@ export enum CONTROLLER_TAGS {
   ALBUM = 'Albums',
   ARTIST = 'Artists',
   USERS = 'Users',
+  FAVORITES = 'Favorites',
 }
