@@ -3,12 +3,14 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 import { Artist } from 'src/artists/entities/artist.entity';
+import { Favorite } from 'src/favorites/entities/favorite.entity';
 
 @Entity()
 export class Album {
@@ -48,4 +50,7 @@ export class Album {
     nullable: true,
   })
   artist: Artist;
+
+  @ManyToMany(() => Favorite, (favorite) => favorite.albums)
+  favorite: Favorite[];
 }

@@ -67,7 +67,7 @@ export class ArtistService {
 
   /** Get one artist by ID  */
   async findOne(id: string) {
-    let artist: CreateArtistDto;
+    let artist = null;
 
     try {
       artist = await this.artistRepository.findOne({
