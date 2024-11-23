@@ -67,7 +67,7 @@ export class ArtistService {
 
   /** Get one artist by ID  */
   async findOne(id: string) {
-    let artist: CreateArtistDto;
+    let artist = null;
 
     try {
       artist = await this.artistRepository.findOne({
@@ -117,7 +117,7 @@ export class ArtistService {
     const artist = await this.findOne(id);
 
     try {
-      await this.artistRepository.softDelete(artist?.id);
+      await this.artistRepository.delete(artist?.id);
     } catch (error) {
       this.logger.error(
         'Failed to delete artist in the database',

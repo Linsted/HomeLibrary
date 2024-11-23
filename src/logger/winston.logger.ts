@@ -7,8 +7,8 @@ const LOGS_PATH = join(__dirname, '..', '..', 'src', 'logs');
 
 const customFormat = format.printf(({ timestamp, level, stack, message }) => {
   const emoji = levelEmojis[level] || '';
-  return `${timestamp} - [${level.toUpperCase()}] - ${emoji} ${
-    stack || message
+  return `${timestamp} - [${level.toUpperCase()}] - ${emoji} ${message} - ${
+    stack ?? ''
   }`;
 });
 
