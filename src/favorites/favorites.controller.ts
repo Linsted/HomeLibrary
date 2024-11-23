@@ -9,6 +9,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 
 import { CONTROLLER_TAGS } from 'src/common/constants/swagger';
+
 import { FavoritesService } from './favorites.service';
 
 /** Favorites controller */
@@ -36,10 +37,14 @@ export class FavoritesController {
   }
 
   /** Add albums to favorites */
-  @Post('/album')
-  addAlbum() {}
+  @Post('/album/:id')
+  addAlbum(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.favoritesService.addAlbum(id);
+  }
 
   /** Delete albums from favorites */
-  @Delete('/album')
-  deleteAlbum() {}
+  @Delete('/album/:id')
+  deleteAlbum(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.favoritesService.deleteAlbum(id);
+  }
 }

@@ -51,6 +51,8 @@ export class Album {
   })
   artist: Artist;
 
-  @ManyToMany(() => Favorite, (favorite) => favorite.albums)
+  @ManyToMany(() => Favorite, (favorite) => favorite.albums, {
+    onDelete: 'CASCADE',
+  })
   favorite: Favorite[];
 }

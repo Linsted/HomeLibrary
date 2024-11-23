@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { ArtistService } from 'src/artists/artists.service';
+import { AlbumsService } from 'src/albums/albums.service';
 
 import { Favorite } from './entities/favorite.entity';
 
@@ -21,11 +22,12 @@ export class FavoritesService {
   SERVICE: string = FavoritesService.name;
 
   constructor(
-    /**Injecting Favorites repository, Artist service and logger */
+    /**Injecting Favorites repository, Artist service, Album service and logger */
     @InjectRepository(Favorite)
     private readonly favoriteRepository: Repository<Favorite>,
-    private readonly artistService: ArtistService,
     private readonly logger: Logger,
+    private readonly artistService: ArtistService,
+    private readonly albumService: AlbumsService,
   ) {}
 
   /** Get all favorites */
@@ -77,7 +79,7 @@ export class FavoritesService {
   async deleteArtist(id: string) {
     let favorites = await this.getFavorites();
 
-    if (!favorites.artists.some((el) => el.id === id)) {
+    if (!favorites.artists.some((artist) => artist.id === id)) {
       throw new NotFoundException(`Artist ${id} not in favs!`);
     }
 
@@ -91,6 +93,55 @@ export class FavoritesService {
       this.logger.error('Failed to delete user from favorites', this.SERVICE);
       throw new InternalServerErrorException(
         'Failed to delete user from favorites',
+      );
+    }
+  }
+
+  /** Add album to favorites */
+  async addAlbum(id: string) {
+    const favorites = await this.getFavorites();
+
+    const album = await this.albumService.findOne(id);
+
+    if (favorites.albums.some((album) => album.id === id)) {
+      throw new BadRequestException('Album already in favorites');
+    }
+
+    favorites.albums.push(album);
+
+    try {
+      await this.favoriteRepository.save(favorites);
+
+      return { message: 'Album added to favs', album };
+    } catch (error) {
+      this.logger.error(
+        'Failed to add new album to the favorites',
+        this.SERVICE,
+      );
+      throw new InternalServerErrorException(
+        'Failed to add new album to the favorites',
+      );
+    }
+  }
+
+  /** Delete album from favorites */
+  async deleteAlbum(id: string) {
+    let favorites = await this.getFavorites();
+
+    if (!favorites.albums.some((album) => album.id === id)) {
+      throw new NotFoundException(`Album ${id} not in favs!`);
+    }
+
+    favorites.albums = favorites.albums.filter((album) => album.id !== id);
+
+    try {
+      await this.favoriteRepository.save(favorites);
+
+      return { message: `Album ${id} deleted successfully` };
+    } catch (error) {
+      this.logger.error('Failed to delete album from favorites', this.SERVICE);
+      throw new InternalServerErrorException(
+        'Failed to delete album from favorites',
       );
     }
   }
