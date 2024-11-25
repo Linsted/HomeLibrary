@@ -15,7 +15,7 @@ import {
   USER_RESPONSE_SAMPLE,
 } from 'src/common/constants/swagger';
 
-import { UsersService } from './users.service';
+import { UsersService } from './providers/users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 

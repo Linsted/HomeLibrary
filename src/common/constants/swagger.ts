@@ -284,9 +284,27 @@ export const ALBUM_RESPONSE_SAMPLE = Object.freeze({
   },
 });
 
+export const AUTH_RESPONSE_SAMPLE = Object.freeze({
+  SIGN_IN: {
+    status: 200,
+    description: 'User auth',
+    schema: {
+      type: 'object',
+      properties: {
+        accessToken: {
+          type: 'string',
+          example:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZWI1ZWNjZS04Y2NmLTQ1NmUtOTUyYy04MjBhYjAxYzZjYTkiLCJsb2dpbiI6IlBldGVyIFBhcmsiLCJpYXQiOjE3MzI1NjM4MDYsImV4cCI6MTczMjU2NzQwNiwiYXVkIjoibG9jYWxob3N0OjQwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6NDAwMCJ9.a4Watbn9Tx-O_18yXoqYYdBjf0bxP7bLX0BivLNjAhg ',
+        },
+      },
+    },
+  },
+});
+
 export enum CONTROLLER_TAGS {
   ALBUM = 'Albums',
   ARTIST = 'Artists',
   USERS = 'Users',
   FAVORITES = 'Favorites',
+  AUTH = 'Auth',
 }

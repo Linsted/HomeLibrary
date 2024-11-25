@@ -1,20 +1,7 @@
-import {
-  IsString,
-  IsNotEmpty,
-  MinLength,
-  MaxLength,
-  IsOptional,
-  IsUUID,
-} from 'class-validator';
-import { Transform } from 'class-transformer';
-import { v4 as uuidv4 } from 'uuid';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
-export class CreateUserDto {
-  @IsOptional()
-  @IsUUID('4', { message: 'id must be a valid UUID' })
-  id: string;
-
+export class SignInDto {
   @ApiProperty({
     description: 'User login',
     example: 'userLogin',

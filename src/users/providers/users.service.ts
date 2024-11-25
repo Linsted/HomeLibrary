@@ -1,5 +1,5 @@
 import {
-  BadRequestException,
+  Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -9,9 +9,10 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdatePasswordDto } from './dto/update-password.dto';
-import { User } from './entities/user.entity';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { UpdatePasswordDto } from '../dto/update-password.dto';
+import { User } from '../entities/user.entity';
+import { CreateUserProvider } from './create-user.provider';
 
 /**
  *Class to connect to Users table and perform business logic
@@ -26,45 +27,12 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private readonly logger: Logger,
+    private readonly createUserProvider: CreateUserProvider,
   ) {}
 
   /** Create user */
-  async create(createUserDto: CreateUserDto) {
-    let existingUser = null;
-
-    try {
-      existingUser = await this.usersRepository.findOne({
-        where: {
-          login: createUserDto.login,
-        },
-        withDeleted: true,
-      });
-    } catch (error) {
-      this.logger.error(
-        'Failed to retrieve users from the database',
-        this.SERVICE,
-      );
-      throw new InternalServerErrorException(
-        'Failed to retrieve users from the database',
-      );
-    }
-
-    if (existingUser) {
-      throw new BadRequestException('User with this login already exists');
-    }
-
-    let newUser = this.usersRepository.create(createUserDto);
-
-    try {
-      newUser = await this.usersRepository.save(newUser);
-    } catch (error) {
-      this.logger.error('Failed to create new user', error.stack, this.SERVICE);
-      throw new InternalServerErrorException('Failed to create new user');
-    }
-
-    const { password, ...newUserWithoutPassword } = newUser;
-
-    return newUserWithoutPassword;
+  create(createUserDto: CreateUserDto) {
+    return this.createUserProvider.create(createUserDto);
   }
 
   /** Find all Users */
@@ -172,5 +140,31 @@ export class UsersService {
     }
 
     return { message: `User ${user?.login} deleted` };
+  }
+
+  /** Find user by login */
+  async findOneByLogin(login: string) {
+    let user: User | null = null;
+
+    try {
+      user = await this.usersRepository.findOne({
+        where: { login },
+        select: ['id', 'login', 'password'],
+      });
+    } catch (error) {
+      this.logger.error(
+        'Failed to retrieve user from the database',
+        this.SERVICE,
+      );
+      throw new InternalServerErrorException(
+        'Failed to retrieve user from the database',
+      );
+    }
+
+    if (!user) {
+      throw new NotFoundException('User not found!');
+    }
+
+    return user;
   }
 }
