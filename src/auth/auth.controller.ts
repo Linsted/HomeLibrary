@@ -1,5 +1,12 @@
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 
 import {
   AUTH_RESPONSE_SAMPLE,
@@ -8,6 +15,7 @@ import {
 
 import { SignInDto } from './dto/sign-in.dto';
 import { AuthService } from './providers/auth.service';
+import { Public } from './decorators/public.decorator';
 
 /** Auth controller*/
 @Controller('/auth')
@@ -19,8 +27,10 @@ export class AuthController {
   ) {}
 
   @Post('sign-in')
+  @Public()
   @ApiResponse(AUTH_RESPONSE_SAMPLE.SIGN_IN)
   @HttpCode(HttpStatus.OK)
+  // @UseGuards(AuthGuard)
   async signIn(@Body() signInDto: SignInDto) {
     return this.authService.signIn(signInDto);
   }
