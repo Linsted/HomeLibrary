@@ -1,15 +1,27 @@
 services:
   postgres:
-    build: .                 # Dockerfile in same folder
+    build:
+      context: .              # Папка з Dockerfile
+      dockerfile: Dockerfile.database # Вказуємо, який Dockerfile використовувати       
     container_name: postgresCont
     ports:
       - "5432:5432"
-    environment:
-      POSTGRES_DB: library_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: pass123
+    env_file: ".env"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.mainApp
+    container_name: mainAppCont
+    ports:
+      - "4000:4000"
+    env_file: ".env"
+    depends_on:
+      - postgres
+    volumes:
+      - ./src:/app/src  
 
 volumes:
   postgres_data:
