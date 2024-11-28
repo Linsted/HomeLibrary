@@ -12,6 +12,7 @@ import { AlbumsModule } from './albums/albums.module';
 import { Album } from './albums/entities/album.entity';
 import { FavoritesModule } from './favorites/favorites.module';
 import { Favorite } from './favorites/entities/favorite.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { Favorite } from './favorites/entities/favorite.entity';
     ArtistModule,
     AlbumsModule,
     FavoritesModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, Logger],

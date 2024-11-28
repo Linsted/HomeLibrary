@@ -7,6 +7,7 @@ import {
   Delete,
   ParseUUIDPipe,
   Patch,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -14,8 +15,9 @@ import {
   CONTROLLER_TAGS,
   USER_RESPONSE_SAMPLE,
 } from 'src/common/constants/swagger';
+import { Public } from 'src/auth/decorators/public.decorator';
 
-import { UsersService } from './users.service';
+import { UsersService } from './providers/users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 
@@ -40,6 +42,7 @@ export class UsersController {
 
   /** Create user */
   @Post()
+  @Public()
   @ApiResponse(USER_RESPONSE_SAMPLE.CREATE_USER)
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
