@@ -1,7 +1,7 @@
-export const levelEmojis = Object.freeze({
-  error: '❌',
-  warn: '⚠️',
-  info: 'ℹ️',
-  http: '🌐',
-  debug: '🐛',
-});
+export enum LEVEL_EMOJIS {
+  error = '❌',
+  warn = '⚠️',
+  info = 'ℹ️',
+  http = '🌐',
+  debug = '🐛',
+}
