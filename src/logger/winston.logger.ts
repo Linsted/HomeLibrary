@@ -1,12 +1,13 @@
 import { join } from 'path';
 import { createLogger, format, transports } from 'winston';
 
-import { levelEmojis } from 'src/common/constants/logger';
+import { LEVEL_EMOJIS } from 'src/common/constants/logger';
+import { ENVIRONMENT } from 'src/common/constants/general.constants';
 
 const LOGS_PATH = join(__dirname, '..', '..', 'src', 'logs');
 
 const customFormat = format.printf(({ timestamp, level, stack, message }) => {
-  const emoji = levelEmojis[level] || '';
+  const emoji = LEVEL_EMOJIS[level] || '';
   return `${timestamp} - [${level.toUpperCase()}] - ${emoji} ${message} - ${
     stack ?? ''
   }`;
@@ -55,6 +56,6 @@ const prodLogger = {
 };
 
 const instanceLogger =
-  process.env.NODE_ENV === 'production' ? prodLogger : devLogger;
+  process.env.NODE_ENV === ENVIRONMENT.PROD ? prodLogger : devLogger;
 
 export const instance = createLogger(instanceLogger);

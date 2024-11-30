@@ -13,6 +13,7 @@ import { Album } from './albums/entities/album.entity';
 import { FavoritesModule } from './favorites/favorites.module';
 import { Favorite } from './favorites/entities/favorite.entity';
 import { AuthModule } from './auth/auth.module';
+import { ENVIRONMENT } from './common/constants/general.constants';
 
 @Module({
   imports: [
@@ -26,8 +27,7 @@ import { AuthModule } from './auth/auth.module';
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
       entities: [User, Artist, Album, Favorite],
-      synchronize: true,
-      // synchronize: true - shouldn`t be use in prod.
+      synchronize: process.env.NODE_ENV === ENVIRONMENT.DEV,
     }),
     ArtistModule,
     AlbumsModule,
